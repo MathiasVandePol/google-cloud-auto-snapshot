@@ -2,8 +2,8 @@
 # Author: Alan Fuller, Fullworks
 # loop through all disks within this project  and create a snapshot
 gcloud compute disks list --format='value(name,zone)'| while read DISK_NAME ZONE; do
-  echo $DISK_NAME
-  if [[ $string == *"mongobackup"* ]]; then
+  if [[ $DISK_NAME == *"mongobackup"* ]]; then
+    echo "Snapshotting disk: $DISK_NAME"
     gcloud compute disks snapshot $DISK_NAME --snapshot-names autogcs-${DISK_NAME:0:31}-$(date "+%Y-%m-%d-%s") --zone $ZONE
   fi
 done
